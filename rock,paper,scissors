@@ -1,0 +1,156 @@
+/**
+ * Created by HJN on 2017/7/21.
+ */
+import java.util.Scanner;
+import java.util.Random;
+public class Game {
+
+    public static String gameId;
+    public static int userCount = 0;
+    public static int comCount = 0;
+
+    public static void main(String[] args){
+
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        System.out.println("欢迎来到《魔改-0，1，2》游戏");
+        System.out.println("《魔改-0，1，2》游戏，也叫魔改-剪刀石头布游戏");
+        System.out.println("规则一：游戏开始后，不得中途退出游戏，否则将以【临阵脱逃者】记录在案");
+        System.out.println("规则二：只允许输入0，1，2三个数字，输入任何其他则无效且视为恶意输入，若恶意输入达到3次，则结束游戏，以【无序之人】记录在案");
+        System.out.println("规则三：输赢判断0(石头)>1(剪刀)>2(布)，2(布)>0(石头)");
+        System.out.println("规则四：若赢则加一分，输则扣一分，当有一方的");
+        System.out.println("规则五：结束游戏方式，积分先到二分者获胜");
+        System.out.println("规则六：若玩家中途想要退出，很抱歉，不行");
+        System.out.println("规则七：Enjoy it");
+        System.out.println("最后玩家ID自取，祝您游戏愉快！");
+        System.out.println("那么！若要开始游戏，请输入1；输入其他数字，游戏自杀！");
+
+//        String comId = new String[4]{"吕布", "曹操", "无名", "燕无双"};
+        int startNum;
+        int guessNum;
+        int randNum;
+        int warnNum = 0;
+        startNum = scanner.nextInt();
+        String anwser;
+
+        if (startNum == 1){
+            System.out.print("游戏开始前，请玩家输入游戏ID：");
+            gameId = scanner.next();
+            System.out.println();
+            System.out.println("玩家："+gameId+"  开始游戏");
+
+            System.out.println("玩家：" +gameId+ " 请出招（输入0或1或2）");
+            guessNum = scanner.nextInt();
+
+            A:for (;;){
+                randNum = random.nextInt(3);
+                if (guessNum>=0 && guessNum <=2){
+                    switch (guessNum){
+                        case 0:
+                            System.out.println("玩家："+gameId+" 使用了北斗神拳");
+                            PK(guessNum, randNum, gameId);
+                            break;
+                        case 1:
+                            System.out.println("玩家："+gameId+" 装备武器，帝具：X之剪");
+                            PK(guessNum, randNum, gameId);
+                            break;
+                        case 2:
+                            System.out.println("玩家："+gameId+" 使用了如来神掌");
+                            PK(guessNum, randNum, gameId);
+                            break;
+                    }
+
+                    if (userCount >= 2){
+                        System.out.println("尊敬的玩家："+gameId+" ，您在三局两胜魔改0-1-2游戏中累计分数"+userCount+"分");
+                        System.out.println("是否继续？Y/N");
+                        anwser = scanner.next();
+                        if (anwser == "n" || anwser == "N"){
+                            System.out.println("\n"+"玩家无意于游戏，程序退出！");
+                            break A;
+                        }
+                    }
+
+                    System.out.println("玩家：" +gameId+ " 请出招（输入0或1或2）");
+                    guessNum = scanner.nextInt();
+                }else{
+                    if (warnNum == 3){
+                        System.out.println("玩家无意于游戏，程序退出！");
+                        break A;
+                    }
+                    System.out.println("警告!请输入(0，1，2)这三个数字其中一个！");
+                    System.out.println("请重新输入！");
+                    guessNum = scanner.nextInt();
+                    if (guessNum < 0 || guessNum > 2){
+                        warnNum++;
+                    }
+                }
+            }
+        }else{
+            System.out.println("玩家无意于游戏，程序退出！");
+        }
+    }
+
+    public static void PK(int num, int rand, String gameID){
+
+        if (num == 2 && rand == 0){
+            System.out.println("系统玩家以一招天马流星拳败北");
+            System.out.println("玩家："+ gameID +"获胜，积分加一");
+            userCount++;
+            System.out.println("当前积分为："+ userCount);
+        }else if(num == 0 && rand == 2){
+            System.out.println("玩家："+gameID+" 以一招北斗神拳败北，胜负乃兵家常事，望再接再厉");
+            System.out.println("系统玩家获胜，积分加一");
+            comCount++;
+            System.out.println("系统玩家当前积分为："+ comCount);
+        }else if (num < rand){
+            switch (num){
+                case 0:
+                    System.out.println("玩家："+gameID+" 使出北斗神拳战胜了系统");
+                    System.out.println("玩家："+gameID+" 获胜，积分加一");
+                    userCount++;
+                    System.out.println("当前积分为："+ userCount);
+                    break;
+                case 1:
+                    System.out.println("玩家："+gameID+" 手持X之剪残忍的分尸系统玩家");
+                    System.out.println("玩家："+gameID+" 获胜，积分加一");
+                    userCount++;
+                    System.out.println("当前积分为："+ userCount);
+                    break;
+                default:
+                    break;
+            }
+        }else if (rand < num){
+            switch (num){
+                case 0:
+                    System.out.println("玩家："+gameID+" 虽手持X之剪，但仍不敌系统玩家使出的友情破颜拳,败北！");
+                    System.out.println("系统玩家获胜，积分加一");
+                    comCount++;
+                    System.out.println("系统玩家当前积分为："+ comCount);
+                    break;
+                case 1:
+                    System.out.println("玩家："+gameID+" 使用如来神掌镇压不成，反被系统玩家以一记崩月次元刃镇压，败北！");
+                    System.out.println("系统玩家获胜，积分加一");
+                    comCount++;
+                    System.out.println("系统玩家当前积分为："+ comCount);
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            switch (num){
+                case 0:
+                    System.out.println("玩家："+gameID+" 以北斗神拳与系统玩家站成平手，没有胜负！");
+                    break;
+                case 1:
+                    System.out.println("玩家："+gameID+" 手持X之剪苦战系统玩家，终成平手，没有胜负！");
+                    break;
+                case 2:
+                    System.out.println("玩家："+gameID+" 使用如来神掌与系统玩家站成平手，没有胜负！");
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+}
